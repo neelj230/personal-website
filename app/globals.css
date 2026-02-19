@@ -1,26 +1,601 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-instrument-serif: "Instrument Serif", serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000000;
+  color: #f0ede8;
+}
+
+main {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── Overlay layer above the globe ─── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ─── Bio container ─── */
+.bio-container {
+  /*
+   * Fixed + z-index: 30 so it sits above bookshelf-overlay (z-index: 20).
+   * BioText must be rendered OUTSIDE the .overlay div in page.tsx because
+   * children of a stacking context cannot exceed their parent's z-index.
+   */
+  position: fixed;
+  top: 44px;
+  left: 48px;
+  z-index: 30;
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  pointer-events: none; /* pass-through clicks in the gap areas */
+}
+
+/* ─── Bio content (right column) ─── */
+.bio-content {
+  pointer-events: auto;
+  max-width: 320px;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+.bio-content--reading {
+  opacity: 0;
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* ─── Name heading ─── */
+.name-heading {
+  font-family: var(--font-instrument-serif);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #f0ede8;
+  margin-bottom: 18px;
+}
+
+/* ─── Bio text ─── */
+.bio-text {
+  font-family: var(--font-instrument-serif);
+  font-style: normal;
+  font-size: 17px;
+  line-height: 1.75;
+  color: rgba(240, 237, 232, 0.65);
+  letter-spacing: 0.01em;
+}
+
+/* Plain interactive words (reading, building) — no pointer, no style change */
+.interactive-link {
+  color: rgba(240, 237, 232, 0.65);
+  text-decoration: none;
+}
+
+/* Travel link — the one clickable word */
+.interactive-link.travel-link {
+  cursor: pointer;
+  color: rgba(240, 237, 232, 0.9);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(240, 237, 232, 0.35);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.interactive-link.travel-link:hover {
+  color: #ffffff;
+  border-bottom-color: rgba(255, 255, 255, 0.7);
+}
+
+.interactive-link.travel-link.disabled {
+  cursor: default;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ─── Travel card ─── */
+.travel-card {
+  position: absolute;
+  bottom: 48px;
+  left: 48px;
+  width: 300px;
+  background: rgba(10, 10, 10, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  pointer-events: auto;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Variant with cover image — slightly wider */
+.travel-card--media {
+  width: 320px;
+}
+
+/* ── Cover image section ── */
+.card-cover {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 0; /* card already clips */
+}
+
+.card-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 55%;
+  display: block;
+}
+
+/* Gradient: top is clear, bottom merges into the card bg */
+.card-cover-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.15) 40%,
+    rgba(10, 10, 10, 0.75) 75%,
+    rgba(10, 10, 10, 0.95) 100%
+  );
+}
+
+/* Title overlay on the image */
+.card-cover-title {
+  position: absolute;
+  bottom: 14px;
+  left: 20px;
+  right: 20px;
+}
+
+.card-cover-label {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.45);
+  margin-bottom: 4px;
+}
+
+.card-cover-heading {
+  font-family: var(--font-instrument-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.25;
+  color: rgba(240, 237, 232, 0.95);
+}
+
+/* ── Card body ── */
+.card-body {
+  padding: 16px 20px 20px;
+}
+
+.trip-counter {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.28);
+  margin-bottom: 8px;
+}
+
+.trip-label {
+  font-family: var(--font-instrument-serif);
+  font-style: italic;
+  font-size: 32px;
+  font-weight: 400;
+  color: #f0ede8;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.trip-city {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  font-size: 10px;
+  color: rgba(240, 237, 232, 0.35);
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+
+.trip-subtitle {
+  font-family: var(--font-instrument-serif);
+  font-style: italic;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(240, 237, 232, 0.5);
+  margin-bottom: 16px;
+}
+
+.substack-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.55);
+  text-decoration: none;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(240, 237, 232, 0.15);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.substack-link:hover {
+  color: rgba(240, 237, 232, 0.9);
+  border-bottom-color: rgba(240, 237, 232, 0.4);
+}
+
+.card-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-btn {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(240, 237, 232, 0.5);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(240, 237, 232, 0.85);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* ─── Hide react-globe.gl compass widget ─── */
+.scene-nav-info,
+canvas + div {
+  display: none !important;
+}
+
+/* ─── Globe dim overlay ─── */
+.globe-dim {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(44px);
+  -webkit-backdrop-filter: blur(44px);
+  pointer-events: none;
+}
+
+/* ─── Bookshelf overlay ─── */
+.bookshelf-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.bookshelf-scene {
+  position: absolute;
+  inset: 0;
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Book 3D structure ─── */
+.book-float-wrapper {
+  animation: bookfloat var(--float-dur, 3s) ease-in-out infinite;
+  /* Required: any element in the chain that applies a transform must also
+     declare preserve-3d, or it flattens all 3D children. */
+  transform-style: preserve-3d;
+}
+
+.book-inner {
+  position: relative;
+  width: var(--w, 128px);
+  height: var(--h, 180px);
+  transform-style: preserve-3d;
+}
+
+.book-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.book-cover {
+  transform: translateZ(calc(var(--d, 22px) / 2));
+}
+
+.book-back {
+  transform: rotateY(180deg) translateZ(calc(var(--d, 22px) / 2));
+}
+
+/* Spine: the transform-origin is the element's centre, so centre it
+   horizontally first (left = (W−D)/2 = 53px) so the origin sits at x = W/2.
+   rotateY(-90deg) + translateZ(W/2) then folds it exactly onto the left wall. */
+.book-spine {
+  width: var(--d, 22px);
+  left: calc((var(--w, 128px) - var(--d, 22px)) / 2);
+  overflow: hidden;
+  transform: rotateY(-90deg) translateZ(calc(var(--w, 128px) / 2));
+}
+
+/* Pages: same maths, opposite rotation → right wall */
+.book-pages {
+  width: var(--d, 22px);
+  left: calc((var(--w, 128px) - var(--d, 22px)) / 2);
+  transform: rotateY(90deg) translateZ(calc(var(--w, 128px) / 2));
+  background: #f5f0e8;
+}
+
+/* ─── Float animation ─── */
+@keyframes bookfloat {
+  0%,
+  100% {
+    transform: translateY(0px) rotateZ(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotateZ(0.12deg);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─── Bookshelf close button ─── */
+.bookshelf-close {
+  position: absolute;
+  top: 44px;
+  right: 48px;
+  font-size: 28px;
+  line-height: 1;
+  color: rgba(240, 237, 232, 0.4);
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 21;
+  transition: color 0.2s ease;
+  pointer-events: auto;
+}
+
+.bookshelf-close:hover {
+  color: #f0ede8;
+}
+
+/* ─── Bookshelf hint text ─── */
+.bookshelf-hint {
+  position: absolute;
+  bottom: 44px;
+  right: 48px;
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
+    monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.25);
+  pointer-events: none;
+}
+
+/* ─── Site navigation ─── */
+.site-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex-shrink: 0;
+  width: 110px;
+  pointer-events: auto;
+  padding-top: 8px;
+}
+
+.nav-label {
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(240, 237, 232, 0.45);
+  margin-bottom: 12px;
+}
+
+.nav-item {
+  position: relative;
+  display: block;
+  width: fit-content;
+  padding: 5px 0 5px 18px;
+  font-family: var(--font-instrument-serif);
+  font-style: normal;
+  font-size: 19px;
+  font-weight: 400;
+  color: rgba(240, 237, 232, 0.45);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s ease;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.nav-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f0ede8;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.nav-item:hover {
+  color: rgba(240, 237, 232, 0.82);
+}
+
+.nav-item--active {
+  color: #f0ede8;
+}
+
+.nav-item--active::before {
+  opacity: 1;
+}
+
+.nav-item--muted {
+  color: rgba(240, 237, 232, 0.18);
+  cursor: default;
+  pointer-events: none;
+}
+
+.nav-item--soon {
+  color: rgba(240, 237, 232, 0.22);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ─── Device float wrapper (mirrors book-float-wrapper) ─── */
+.device-float-wrapper {
+  animation: bookfloat var(--float-dur, 3s) ease-in-out infinite;
+}
+
+/* ─── Device caption ─── */
+.device-caption {
+  margin-top: 14px;
+  font-family: var(--font-instrument-serif);
+  font-style: normal;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(240, 237, 232, 0.92);
+  text-align: center;
+  max-width: 100%;
+  pointer-events: none;
+}
+
+/* ─── Shimmer animation (used by slide-to-answer) ─── */
+@keyframes textShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ─── Gradient shift animation (laptop fallback) ─── */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ─── InVideoHero scroll animations ─── */
+@keyframes scroll-up {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+@keyframes scroll-down {
+  from { transform: translateY(-50%); }
+  to   { transform: translateY(0); }
+}
+.animate-scroll-up {
+  animation: scroll-up var(--scroll-speed, 40s) linear infinite;
+}
+.animate-scroll-down {
+  animation: scroll-down var(--scroll-speed, 40s) linear infinite;
+}
+
+/* ─── LocalClock pulse dot ─── */
+.clock-pulse-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(240, 237, 232, 0.45);
+  box-shadow: 0 0 0 0 rgba(240, 237, 232, 0.30);
+  animation: clock-pulse 2.8s ease-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes clock-pulse {
+  0%   { box-shadow: 0 0 0 0    rgba(240, 237, 232, 0.30); }
+  60%  { box-shadow: 0 0 0 6px  rgba(240, 237, 232, 0.00); }
+  100% { box-shadow: 0 0 0 0    rgba(240, 237, 232, 0.00); }
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 640px) {
+  .bio-container {
+    top: 24px;
+    left: 20px;
+    right: 20px;
+    gap: 24px;
+  }
+
+  .site-nav {
+    width: 90px;
+  }
+
+  .bio-content {
+    max-width: unset;
+  }
+
+  .name-heading {
+    font-size: 40px;
+  }
+
+  .bio-text {
+    font-size: 15px;
+  }
+
+  .nav-item {
+    font-size: 17px;
+  }
+
+  .travel-card,
+  .travel-card--media {
+    bottom: 20px;
+    left: 16px;
+    right: 16px;
+    width: unset;
+  }
+
+  .card-cover {
+    height: 160px;
+  }
 }
