@@ -296,7 +296,7 @@ canvas + div {
 .bookshelf-overlay {
   position: fixed;
   inset: 0;
-  z-index: 31;
+  z-index: 20;
   pointer-events: auto;
 }
 
@@ -383,7 +383,7 @@ canvas + div {
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 32;
+  z-index: 21;
   transition: color 0.2s ease;
   pointer-events: auto;
 }
@@ -662,7 +662,8 @@ canvas + div {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px 8px;
-    padding: 60px 12px 100px;
+    /* padding-top: pushes grid below the fixed nav (top:24px + ~140px nav height) */
+    padding: 170px 12px 100px;
     position: absolute;
     inset: 0;
     overflow-y: auto;
