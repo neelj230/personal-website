@@ -296,7 +296,7 @@ canvas + div {
 .bookshelf-overlay {
   position: fixed;
   inset: 0;
-  z-index: 20;
+  z-index: 31;
   pointer-events: auto;
 }
 
@@ -383,7 +383,7 @@ canvas + div {
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 21;
+  z-index: 32;
   transition: color 0.2s ease;
   pointer-events: auto;
 }
@@ -585,31 +585,31 @@ canvas + div {
 
   .bio-content {
     max-width: unset;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-radius: 12px;
-    padding: 14px 16px;
   }
 
   .name-heading {
     font-size: 38px;
     margin-bottom: 12px;
+    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.95), 0 2px 6px rgba(0, 0, 0, 0.8);
   }
 
   .bio-text {
     font-size: 14px;
     line-height: 1.65;
+    color: rgba(240, 237, 232, 0.88);
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9), 0 1px 4px rgba(0, 0, 0, 0.7);
   }
 
   .nav-item {
     font-size: 16px;
     padding: 4px 0 4px 16px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
   }
 
   .nav-label {
     font-size: 10px;
     margin-bottom: 8px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
   }
 
   /* ── Travel card ── */
@@ -673,6 +673,13 @@ canvas + div {
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 0;
+  }
+
+  .project-shelf-mobile .device-caption {
+    font-size: 11px;
+    line-height: 1.55;
+    margin-top: 10px;
   }
 
   .project-mobile-link {

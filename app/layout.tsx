@@ -13,9 +13,6 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Neel Jain",
   description: "Personal website of Neel Jain — Penn, a16z scout, traveler.",
-  icons: {
-    icon: "/globe-favicon.svg",
-  },
 };
 
 export default function RootLayout({

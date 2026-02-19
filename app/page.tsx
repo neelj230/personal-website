@@ -55,10 +55,14 @@ export default function Home() {
     (handle: GlobeMethods) => {
       globeRef.current = handle;
 
-      // Snap to US view, then gentle zoom-in
-      handle.pointOfView({ lat: US_LAT, lng: US_LNG, altitude: 2.8 }, 0);
+      // Mobile: start zoomed out so the full earth is visible
+      const isMobile = window.innerWidth < 640;
+      const startAlt = isMobile ? 4.2 : 2.8;
+      const endAlt = isMobile ? 3.5 : 2.0;
+
+      handle.pointOfView({ lat: US_LAT, lng: US_LNG, altitude: startAlt }, 0);
       setTimeout(() => {
-        handle.pointOfView({ lat: US_LAT, lng: US_LNG, altitude: 2.0 }, 1800);
+        handle.pointOfView({ lat: US_LAT, lng: US_LNG, altitude: endAlt }, 1800);
       }, 100);
 
       // Background: fetch geolocation and drop visitor pin silently

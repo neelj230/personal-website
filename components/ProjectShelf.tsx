@@ -56,15 +56,23 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
 
           {/* Mobile: scrollable 2-column grid with full-size captions */}
           <div className="project-shelf-mobile">
-            {projects.map((project) => {
+            {projects.map((project, i) => {
               const mScale = 0.37;
               const vW = Math.round(project.w * mScale);
               const vH = Math.round(project.h * mScale);
+              // Bottom-align devices within each row so captions line up
+              const rowStart = Math.floor(i / 2) * 2;
+              const deviceAreaH = Math.max(
+                ...projects.slice(rowStart, rowStart + 2).map((p) => Math.round(p.h * mScale))
+              );
               return (
                 <div key={project.id} className="project-mobile-card">
-                  <div style={{ width: vW, height: vH, overflow: "hidden", margin: "0 auto" }}>
-                    <div style={{ transform: `scale(${mScale})`, transformOrigin: "top left", width: project.w, height: project.h }}>
-                      <DeviceFrame project={project} />
+                  {/* Fixed-height area: devices bottom-aligned so captions start at same height */}
+                  <div style={{ width: vW, height: deviceAreaH, display: "flex", alignItems: "flex-end", justifyContent: "center", margin: "0 auto" }}>
+                    <div style={{ width: vW, height: vH, overflow: "hidden", flexShrink: 0 }}>
+                      <div style={{ transform: `scale(${mScale})`, transformOrigin: "top left", width: project.w, height: project.h }}>
+                        <DeviceFrame project={project} />
+                      </div>
                     </div>
                   </div>
                   <p className="device-caption">{project.description}</p>
