@@ -488,6 +488,11 @@ canvas + div {
   animation: bookfloat var(--float-dur, 3s) ease-in-out infinite;
 }
 
+/* ─── Project shelf: mobile grid hidden on desktop ─── */
+.project-shelf-mobile {
+  display: none;
+}
+
 /* ─── Device caption ─── */
 .device-caption {
   margin-top: 14px;
@@ -580,6 +585,11 @@ canvas + div {
 
   .bio-content {
     max-width: unset;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 12px;
+    padding: 14px 16px;
   }
 
   .name-heading {
@@ -643,16 +653,40 @@ canvas + div {
     transform-origin: center center;
   }
 
-  /* ── Project shelf: scale 2×2 device grid to fit narrow viewport ── */
-  .project-shelf-scene {
-    transform: scale(0.47);
-    transform-origin: center center;
+  /* ── Project shelf: hide desktop 2×2 float layout; show mobile grid ── */
+  .project-shelf-desktop {
+    display: none !important;
   }
 
-  /* ── Device captions ── */
-  .device-caption {
-    font-size: 12px;
-    margin-top: 10px;
+  .project-shelf-mobile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 8px;
+    padding: 60px 12px 100px;
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    align-content: start;
+  }
+
+  .project-mobile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .project-mobile-link {
+    display: block;
+    text-align: center;
+    margin: 6px auto 0;
+    font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    color: rgba(240, 237, 232, 0.55);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(240, 237, 232, 0.22);
+    padding-bottom: 1px;
+    width: fit-content;
   }
 
   /* ── LocalClock ── */

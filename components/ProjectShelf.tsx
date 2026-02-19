@@ -45,12 +45,43 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
             ×
           </button>
 
-          <div className="bookshelf-scene project-shelf-scene">
+          {/* Desktop: floating 2×2 scene */}
+          <div className="bookshelf-scene project-shelf-scene project-shelf-desktop">
             <AnimatePresence>
               {projects.map((project, i) => (
                 <ProjectDevice key={project.id} project={project} index={i} />
               ))}
             </AnimatePresence>
+          </div>
+
+          {/* Mobile: scrollable 2-column grid with full-size captions */}
+          <div className="project-shelf-mobile">
+            {projects.map((project) => {
+              const mScale = 0.37;
+              const vW = Math.round(project.w * mScale);
+              const vH = Math.round(project.h * mScale);
+              return (
+                <div key={project.id} className="project-mobile-card">
+                  <div style={{ width: vW, height: vH, overflow: "hidden", margin: "0 auto" }}>
+                    <div style={{ transform: `scale(${mScale})`, transformOrigin: "top left", width: project.w, height: project.h }}>
+                      <DeviceFrame project={project} />
+                    </div>
+                  </div>
+                  <p className="device-caption">{project.description}</p>
+                  {project.url && (
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-mobile-link"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
+                    </a>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           <p className="bookshelf-hint">drag devices · interact with screens</p>
