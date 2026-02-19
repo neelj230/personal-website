@@ -45,7 +45,7 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
             ×
           </button>
 
-          <div className="bookshelf-scene">
+          <div className="bookshelf-scene project-shelf-scene">
             <AnimatePresence>
               {projects.map((project, i) => (
                 <ProjectDevice key={project.id} project={project} index={i} />

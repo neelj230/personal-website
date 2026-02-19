@@ -38,7 +38,7 @@ export default function BookShelf({ visible, onClose }: BookShelfProps) {
             ×
           </button>
 
-          <div className="bookshelf-scene">
+          <div className="bookshelf-scene book-shelf-scene">
             <AnimatePresence>
               {books.map((book, i) => (
                 <Book3D key={book.id} book={book} index={i} />

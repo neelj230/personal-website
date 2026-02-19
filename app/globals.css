@@ -558,17 +558,24 @@ canvas + div {
   100% { box-shadow: 0 0 0 0    rgba(240, 237, 232, 0.00); }
 }
 
+/* ─── LocalClock positioning (desktop) ─── */
+.local-clock {
+  bottom: 44px;
+  right: 48px;
+}
+
 /* ─── Mobile ─── */
 @media (max-width: 640px) {
+  /* ── Bio / nav ── */
   .bio-container {
     top: 24px;
     left: 20px;
     right: 20px;
-    gap: 24px;
+    gap: 20px;
   }
 
   .site-nav {
-    width: 90px;
+    width: 84px;
   }
 
   .bio-content {
@@ -576,26 +583,81 @@ canvas + div {
   }
 
   .name-heading {
-    font-size: 40px;
+    font-size: 38px;
+    margin-bottom: 12px;
   }
 
   .bio-text {
-    font-size: 15px;
+    font-size: 14px;
+    line-height: 1.65;
   }
 
   .nav-item {
-    font-size: 17px;
+    font-size: 16px;
+    padding: 4px 0 4px 16px;
   }
 
+  .nav-label {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+
+  /* ── Travel card ── */
   .travel-card,
   .travel-card--media {
     bottom: 20px;
-    left: 16px;
-    right: 16px;
+    left: 12px;
+    right: 12px;
     width: unset;
+    border-radius: 14px;
   }
 
   .card-cover {
-    height: 160px;
+    height: 150px;
+  }
+
+  .trip-label {
+    font-size: 26px;
+  }
+
+  .card-body {
+    padding: 14px 16px 16px;
+  }
+
+  /* ── Overlay close + hint ── */
+  .bookshelf-close {
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+  }
+
+  .bookshelf-hint {
+    bottom: 20px;
+    right: 20px;
+    font-size: 9px;
+  }
+
+  /* ── Book shelf: gentle scale so all books stay on screen ── */
+  .book-shelf-scene {
+    transform: scale(0.65);
+    transform-origin: center center;
+  }
+
+  /* ── Project shelf: scale 2×2 device grid to fit narrow viewport ── */
+  .project-shelf-scene {
+    transform: scale(0.47);
+    transform-origin: center center;
+  }
+
+  /* ── Device captions ── */
+  .device-caption {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+
+  /* ── LocalClock ── */
+  .local-clock {
+    bottom: 16px;
+    right: 16px;
   }
 }

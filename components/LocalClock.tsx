@@ -41,10 +41,9 @@ export default function LocalClock({ visible }: LocalClockProps) {
 
   return (
     <div
+      className="local-clock"
       style={{
         position: "fixed",
-        bottom: 44,
-        right: 48,
         zIndex: 10,
         display: "flex",
         flexDirection: "column",
