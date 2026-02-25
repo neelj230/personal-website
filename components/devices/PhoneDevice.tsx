@@ -469,6 +469,7 @@ function IncomingCallScreen({
               }px)`,
               transition: isDragging ? "none" : "all 0.3s ease-out",
             }}
+            data-no-drag
             onPointerDown={(e) => {
               // Stop event reaching Framer's drag layer, then start slide tracking
               e.stopPropagation();
@@ -547,6 +548,7 @@ function ActiveCallScreen({
             <button
               type="button"
               style={{ width: 56, height: 56, borderRadius: "50%", background: "#ff3b30", border: "none", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 4px 12px rgba(255,59,48,0.5)" }}
+              data-no-drag
               onMouseDown={(e) => { e.stopPropagation(); onEndCall(); }}
               onClick={(e) => { e.stopPropagation(); onEndCall(); }}
             >

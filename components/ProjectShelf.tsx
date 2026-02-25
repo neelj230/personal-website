@@ -101,6 +101,7 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
 
 function ProjectDevice({ project, index }: { project: Project; index: number }) {
   const [isDragging, setIsDragging] = useState(false);
+  const [dragEnabled, setDragEnabled] = useState(true);
   const { w, h, x, y, scale, floatDuration, floatDelay } = project;
 
   const vW = Math.round(w * scale);
@@ -123,8 +124,9 @@ function ProjectDevice({ project, index }: { project: Project; index: number }) 
       }}
     >
       <motion.div
-        drag
+        drag={dragEnabled}
         dragMomentum={false}
+        dragListener={dragEnabled}
         style={{
           width: cW,
           cursor: isDragging ? "grabbing" : "grab",
@@ -133,6 +135,16 @@ function ProjectDevice({ project, index }: { project: Project; index: number }) 
         }}
         onDragStart={() => setIsDragging(true)}
         onDragEnd={() => setTimeout(() => setIsDragging(false), 50)}
+        onPointerDownCapture={(e) => {
+          // If the pointer is over an interactive screen element (slider thumb, buttons),
+          // disable drag so the screen interaction takes priority
+          const target = e.target as HTMLElement;
+          if (target.closest("[data-no-drag]")) {
+            setDragEnabled(false);
+            const restore = () => { setDragEnabled(true); window.removeEventListener("pointerup", restore); };
+            window.addEventListener("pointerup", restore);
+          }
+        }}
       >
         {/* Float: bobs gently, wraps only the device */}
         <div

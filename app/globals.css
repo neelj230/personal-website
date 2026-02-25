@@ -113,6 +113,24 @@ main {
   pointer-events: none;
 }
 
+/* ─── Social icons bar (bottom left) ─── */
+.social-icons-bar {
+  bottom: 36px;
+  left: 48px;
+}
+
+.social-icon {
+  color: rgba(240, 237, 232, 0.35);
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.social-icon:hover {
+  color: rgba(240, 237, 232, 0.75);
+}
+
 /* ─── Travel card ─── */
 .travel-card {
   position: absolute;
@@ -565,7 +583,7 @@ canvas + div {
 
 /* ─── LocalClock positioning (desktop) ─── */
 .local-clock {
-  bottom: 44px;
+  bottom: 36px;
   right: 48px;
 }
 
@@ -701,5 +719,10 @@ canvas + div {
   .local-clock {
     bottom: 16px;
     right: 16px;
+  }
+
+  .social-icons-bar {
+    bottom: 16px;
+    left: 20px;
   }
 }

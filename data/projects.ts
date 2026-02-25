@@ -56,7 +56,7 @@ export const projects: Project[] = [
     id: "invideochat",
     title: "InVideoChat",
     description:
-      "Built InVideo, an AI-native platform to watch educational YouTube videos and interact via chat and voice.",
+      "Built InVideo, an AI-native platform to watch educational YouTube videos and interact via chat and voice, with a knowledge graph of context between videos.",
     url: "https://invideochat.vercel.app/",
     captionOffset: -32,
     device: "laptop",

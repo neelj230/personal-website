@@ -64,14 +64,6 @@ export default function TravelCard({
               {index + 1} / {total}
             </div>
 
-            {/* Intro blurb — header on the first card, above the destination name */}
-            {index === 0 && (
-              <p className="trip-subtitle" style={{ marginBottom: 12 }}>
-                I&apos;m fortunate to have been funded to visit and learn in each of
-                these incredible places during undergrad. Follow through my journey!
-              </p>
-            )}
-
             {/* Only show label + city here when there's no cover (no media) */}
             {!hasMedia && (
               <>
