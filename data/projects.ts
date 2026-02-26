@@ -42,7 +42,7 @@ export const projects: Project[] = [
     id: "penn-faces",
     title: "Penn Faces",
     description:
-      "Founded Penn Faces, a platform to randomly pair Penn students for free lunches. 600 sign-ups in 48 hours, 1,000+ matched — 80% exchanged numbers, 100% would do it again.",
+      "Founded Penn Faces, an app to randomly pair Penn students for free lunches. 600 sign-ups in 48 hours, 1,000+ matched — 80% exchanged numbers, 100% would do it again.",
     device: "clipboard",
     w: 260,
     h: 360,
@@ -56,7 +56,7 @@ export const projects: Project[] = [
     id: "invideochat",
     title: "InVideoChat",
     description:
-      "Built InVideo, an AI-native platform to watch educational YouTube videos and interact via chat and voice, with a knowledge graph of context between videos.",
+      "Built InVideo, an AI-native platform to watch and interact with educational YouTube videos through chat and voice, with a knowledge graph connecting context across videos.",
     url: "https://invideochat.vercel.app/",
     captionOffset: -32,
     device: "laptop",

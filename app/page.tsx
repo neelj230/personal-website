@@ -8,6 +8,7 @@ import TravelCard from "@/components/TravelCard";
 import BookShelf from "@/components/BookShelf";
 import ProjectShelf from "@/components/ProjectShelf";
 import LocalClock from "@/components/LocalClock";
+import GlobeErrorBoundary from "@/components/GlobeErrorBoundary";
 import { trips } from "@/data/trips";
 import type { GlobeMethods } from "react-globe.gl";
 
@@ -216,12 +217,14 @@ export default function Home() {
 
   return (
     <main>
-      <Globe
-        visitorCoords={visitorCoords}
-        activeArc={activeArc}
-        activeTripPins={activeTripPins}
-        onGlobeReady={handleGlobeReady}
-      />
+      <GlobeErrorBoundary>
+        <Globe
+          visitorCoords={visitorCoords}
+          activeArc={activeArc}
+          activeTripPins={activeTripPins}
+          onGlobeReady={handleGlobeReady}
+        />
+      </GlobeErrorBoundary>
 
       {/* Globe dim overlay — between globe (z:0) and UI overlay (z:10) */}
       <AnimatePresence>
