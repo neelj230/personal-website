@@ -13,6 +13,15 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Neel Jain",
   description: "Personal website of Neel Jain — Penn, a16z scout, traveler.",
+  openGraph: {
+    title: "Neel Jain",
+    siteName: "Neel Jain",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Neel Jain",
+  },
 };
 
 export default function RootLayout({
