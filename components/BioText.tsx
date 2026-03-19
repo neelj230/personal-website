@@ -64,7 +64,7 @@ export default function BioText({
       <div className={`bio-content${bioHidden ? " bio-content--reading" : ""}`}>
         <h1 className="name-heading">Neel Jain</h1>
         <p className="bio-text">
-          Currently I&apos;m at Penn and writing scout checks for a16z.{" "}
+          I previously interned at a16z and am now writing scout checks while at Penn.{" "}
           In my free time I like{" "}
           <span
             className={`interactive-link travel-link${disabled ? " disabled" : ""}`}
