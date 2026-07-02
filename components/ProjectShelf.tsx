@@ -7,6 +7,7 @@ import PhoneDevice from "@/components/devices/PhoneDevice";
 import LaptopDevice from "@/components/devices/LaptopDevice";
 import ClipboardDevice from "@/components/devices/ClipboardDevice";
 import TVDevice from "@/components/devices/TVDevice";
+import PennReachDevice from "@/components/devices/PennReachDevice";
 import type { Project } from "@/data/projects";
 
 // Caption container width — wide enough for full text without clamping
@@ -224,5 +225,7 @@ function DeviceFrame({ project }: { project: Project }) {
       return <ClipboardDevice />;
     case "tv":
       return <TVDevice />;
+    case "browser":
+      return <PennReachDevice />;
   }
 }

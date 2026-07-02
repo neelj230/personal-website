@@ -2,7 +2,7 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  device: "phone" | "laptop" | "clipboard" | "tv";
+  device: "phone" | "laptop" | "clipboard" | "tv" | "browser";
   w: number;
   h: number;
   x: number;
@@ -53,18 +53,17 @@ export const projects: Project[] = [
     floatDelay: 0.6,
   },
   {
-    id: "invideochat",
-    title: "InVideoChat",
+    id: "pennreach",
+    title: "PennReach",
     description:
-      "Built InVideo, an AI-native platform to interact with YouTube videos through chat and voice, with a knowledge graph to connect context across videos.",
-    url: "https://invideochat.vercel.app/",
-    captionOffset: -32,
-    device: "laptop",
-    w: 460,
-    h: 447,
+      "Built PennReach, a Chrome extension and CRM to automate emails, follow-ups, and responses for alumni networking.",
+    url: "https://pennreach.app",
+    device: "browser",
+    w: 640,
+    h: 460,
     x: 210,
-    y: 184,
-    scale: 0.65,
+    y: 159,
+    scale: 0.6,
     floatDuration: 3.4,
     floatDelay: 0.9,
   },
