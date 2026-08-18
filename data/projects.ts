@@ -2,7 +2,7 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  device: "phone" | "laptop" | "clipboard" | "tv" | "browser";
+  device: "phone" | "laptop" | "clipboard" | "tv" | "browser" | "browser-live";
   w: number;
   h: number;
   x: number;
@@ -11,17 +11,20 @@ export interface Project {
   floatDuration: number;
   floatDelay: number;
   url?: string;
+  /** If set (with `url`), the device mockup itself links out, not just the caption link */
+  linkImage?: boolean;
   /** Pull caption up (negative) or push down (positive) relative to clip bottom */
   captionOffset?: number;
 }
 
-// 2×2 layout, viewport center = (0,0)
+// 3×2 layout, viewport center = (0,0)
 // Captions aligned per row at caption_top = y + vH/2 + 14
-//   Top row caption_top  = -100  (284px from top on 768px screen — always in view)
+//   Top row caption_top    = -100  (284px from top on 768px screen — always in view)
 //   Bottom row caption_top = 311  (695px from top — full text fits before 768px)
 //
-//   TV  y=-232 vH≈236 → cap@-100   Phone y=-246 vH=264 → cap@-100
-//   Clip y=168 vH≈259 → cap@311    Laptop y=172 vH≈250 → cap@311
+//   TV   y=-232 vH≈236 → cap@-100   Phone y=-246 vH=264 → cap@-100   Clip y=-244 vH≈259 → cap@-100
+//   Laugh&Learn and PennReach share identical w/h/scale (640×460 @ 0.6 → 384×276)
+//   so the bottom row is two equal-size boxes, mirrored at x=∓220, y=159 → cap@311
 
 export const projects: Project[] = [
   {
@@ -32,7 +35,7 @@ export const projects: Project[] = [
     device: "tv",
     w: 420,
     h: 278,
-    x: -210,
+    x: -360,
     y: -232,
     scale: 0.85,
     floatDuration: 3.8,
@@ -46,26 +49,11 @@ export const projects: Project[] = [
     device: "clipboard",
     w: 260,
     h: 360,
-    x: -210,
-    y: 168,
+    x: 0,
+    y: -244,
     scale: 0.72,
     floatDuration: 2.7,
     floatDelay: 0.6,
-  },
-  {
-    id: "pennreach",
-    title: "PennReach",
-    description:
-      "Built PennReach, a Chrome extension and CRM to automate emails, follow-ups, and responses for alumni networking.",
-    url: "https://pennreach.app",
-    device: "browser",
-    w: 640,
-    h: 460,
-    x: 210,
-    y: 159,
-    scale: 0.6,
-    floatDuration: 3.4,
-    floatDelay: 0.9,
   },
   {
     id: "rentbot",
@@ -76,10 +64,41 @@ export const projects: Project[] = [
     device: "phone",
     w: 290,
     h: 600,
-    x: 210,
+    x: 360,
     y: -246,
     scale: 0.44,
     floatDuration: 3.1,
     floatDelay: 0.3,
+  },
+  {
+    id: "smb-agency",
+    title: "SMB Website Agency",
+    description:
+      "Bootstrapped website design agency to five figure revenue, redesigning interfaces for daycares, real estate, and accounting businesses.",
+    url: "https://laughandlearnchildcare.com/",
+    linkImage: true,
+    device: "browser-live",
+    w: 640,
+    h: 460,
+    x: -220,
+    y: 159,
+    scale: 0.6,
+    floatDuration: 3.6,
+    floatDelay: 1.2,
+  },
+  {
+    id: "pennreach",
+    title: "PennReach",
+    description:
+      "Built PennReach, a Chrome extension and CRM to automate emails, follow-ups, and responses for alumni networking.",
+    url: "https://pennreach.app",
+    device: "browser",
+    w: 640,
+    h: 460,
+    x: 220,
+    y: 159,
+    scale: 0.6,
+    floatDuration: 3.4,
+    floatDelay: 0.9,
   },
 ];

@@ -8,7 +8,7 @@ import LaptopDevice from "@/components/devices/LaptopDevice";
 import ClipboardDevice from "@/components/devices/ClipboardDevice";
 import TVDevice from "@/components/devices/TVDevice";
 import PennReachDevice from "@/components/devices/PennReachDevice";
-import OneWeekProjects from "@/components/OneWeekProjects";
+import LaughAndLearnDevice from "@/components/devices/LaughAndLearnDevice";
 import type { Project } from "@/data/projects";
 
 // Caption container width — wide enough for full text without clamping
@@ -47,20 +47,14 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
             ×
           </button>
 
-          {/* Desktop: floating 2×2 scene, one viewport tall so its internal
-              x/y positioning keeps referencing the viewport exactly */}
-          <div className="project-shelf-viewport project-shelf-desktop">
-            <div className="bookshelf-scene project-shelf-scene">
-              <AnimatePresence>
-                {projects.map((project, i) => (
-                  <ProjectDevice key={project.id} project={project} index={i} />
-                ))}
-              </AnimatePresence>
-            </div>
+          {/* Desktop: floating 3×2 scene */}
+          <div className="bookshelf-scene project-shelf-scene project-shelf-desktop">
+            <AnimatePresence>
+              {projects.map((project, i) => (
+                <ProjectDevice key={project.id} project={project} index={i} />
+              ))}
+            </AnimatePresence>
           </div>
-
-          {/* Desktop: speed-build showcase below the fold (scroll to reveal) */}
-          <OneWeekProjects variant="desktop" />
 
           {/* Mobile: scrollable 2-column grid with full-size captions */}
           <div className="project-shelf-mobile">
@@ -73,15 +67,30 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
               const deviceAreaH = Math.max(
                 ...projects.slice(rowStart, rowStart + 2).map((p) => Math.round(p.h * mScale))
               );
+              const scaledDevice = (
+                <div style={{ transform: `scale(${mScale})`, transformOrigin: "top left", width: project.w, height: project.h, pointerEvents: project.linkImage ? "none" : undefined }}>
+                  <DeviceFrame project={project} />
+                </div>
+              );
               return (
                 <div key={project.id} className="project-mobile-card">
                   {/* Fixed-height area: devices bottom-aligned so captions start at same height */}
                   <div style={{ width: vW, height: deviceAreaH, display: "flex", alignItems: "flex-end", justifyContent: "center", margin: "0 auto" }}>
-                    <div style={{ width: vW, height: vH, overflow: "hidden", flexShrink: 0 }}>
-                      <div style={{ transform: `scale(${mScale})`, transformOrigin: "top left", width: project.w, height: project.h }}>
-                        <DeviceFrame project={project} />
+                    {project.linkImage && project.url ? (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ width: vW, height: vH, overflow: "hidden", flexShrink: 0, display: "block" }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {scaledDevice}
+                      </a>
+                    ) : (
+                      <div style={{ width: vW, height: vH, overflow: "hidden", flexShrink: 0 }}>
+                        {scaledDevice}
                       </div>
-                    </div>
+                    )}
                   </div>
                   <p className="device-caption">{project.description}</p>
                   {project.url && (
@@ -98,9 +107,6 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
                 </div>
               );
             })}
-            <div className="project-mobile-owp">
-              <OneWeekProjects variant="mobile" />
-            </div>
           </div>
 
           <p className="bookshelf-hint">drag devices · interact with screens</p>
@@ -170,16 +176,39 @@ function ProjectDevice({ project, index }: { project: Project; index: number }) 
           {/* Clip: layout = visual size, centered in wider container */}
           <div style={{ width: vW, height: vH, overflow: "hidden", margin: "0 auto" }}>
             {/* Scale: CSS transform only, no layout bleed */}
-            <div
-              style={{
-                transform: `scale(${scale})`,
-                transformOrigin: "top left",
-                width: w,
-                height: h,
-              }}
-            >
-              <DeviceFrame project={project} />
-            </div>
+            {project.linkImage && project.url ? (
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-no-drag
+                style={{ display: "block", width: vW, height: vH, cursor: "pointer" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div
+                  style={{
+                    transform: `scale(${scale})`,
+                    transformOrigin: "top left",
+                    width: w,
+                    height: h,
+                    pointerEvents: "none",
+                  }}
+                >
+                  <DeviceFrame project={project} />
+                </div>
+              </a>
+            ) : (
+              <div
+                style={{
+                  transform: `scale(${scale})`,
+                  transformOrigin: "top left",
+                  width: w,
+                  height: h,
+                }}
+              >
+                <DeviceFrame project={project} />
+              </div>
+            )}
           </div>
         </div>
 
@@ -237,5 +266,7 @@ function DeviceFrame({ project }: { project: Project }) {
       return <TVDevice />;
     case "browser":
       return <PennReachDevice />;
+    case "browser-live":
+      return <LaughAndLearnDevice />;
   }
 }
