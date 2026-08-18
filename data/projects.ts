@@ -13,6 +13,8 @@ export interface Project {
   url?: string;
   /** If set (with `url`), the device mockup itself links out, not just the caption link */
   linkImage?: boolean;
+  /** Prefix shown before the URL in the caption link, e.g. "Example Website" */
+  linkLabel?: string;
   /** Pull caption up (negative) or push down (positive) relative to clip bottom */
   captionOffset?: number;
 }
@@ -77,6 +79,7 @@ export const projects: Project[] = [
       "Bootstrapped website design agency to five figure revenue, redesigning interfaces for daycares, real estate, and accounting businesses.",
     url: "https://laughandlearnchildcare.com/",
     linkImage: true,
+    linkLabel: "Example Website",
     device: "browser-live",
     w: 640,
     h: 460,

@@ -75,17 +75,31 @@ export default function LaughAndLearnDevice() {
       </div>
 
       {/* ── Live site ── */}
-      <iframe
-        src="https://laughandlearnchildcare.com/"
-        title="Laugh & Learn Childcare — live site"
-        style={{
-          width: "100%",
-          height: NATIVE_H - CHROME_H,
-          border: "none",
-          display: "block",
-        }}
-        loading="lazy"
-      />
+      <div style={{ position: "relative", width: "100%", height: NATIVE_H - CHROME_H }}>
+        <iframe
+          src="https://laughandlearnchildcare.com/"
+          title="Laugh & Learn Childcare — live site"
+          style={{
+            width: "100%",
+            height: "100%",
+            border: "none",
+            display: "block",
+          }}
+          loading="lazy"
+        />
+        {/* Fade the crop line so body copy trails off instead of cutting mid-sentence */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 90,
+            background: "linear-gradient(to bottom, rgba(245,241,232,0) 0%, rgba(245,241,232,0.94) 65%, #F5F1E8 100%)",
+            pointerEvents: "none",
+          }}
+        />
+      </div>
     </div>
   );
 }

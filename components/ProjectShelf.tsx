@@ -101,6 +101,7 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
                       className="project-mobile-link"
                       onClick={(e) => e.stopPropagation()}
                     >
+                      {project.linkLabel ? `${project.linkLabel}: ` : ""}
                       {project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
                     </a>
                   )}
@@ -245,6 +246,7 @@ function ProjectDevice({ project, index }: { project: Project; index: number }) 
             }}
             onClick={(e) => e.stopPropagation()}
           >
+            {project.linkLabel ? `${project.linkLabel}: ` : ""}
             {project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
           </a>
         )}
