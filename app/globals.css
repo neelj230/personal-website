@@ -316,6 +316,7 @@ canvas + div {
   inset: 0;
   z-index: 20;
   pointer-events: auto;
+  overflow-y: auto;
 }
 
 .bookshelf-scene {
@@ -326,6 +327,16 @@ canvas + div {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* One viewport-tall stage for the project scene, so its internal absolute
+   x/y positioning (all calc(50% + …)) keeps referencing exactly the
+   viewport even though the overlay itself can now scroll further content
+   (One Week Projects) in below the fold. */
+.project-shelf-viewport {
+  position: relative;
+  height: 100vh;
+  width: 100%;
 }
 
 /* ─── Book 3D structure ─── */
@@ -392,7 +403,7 @@ canvas + div {
 
 /* ─── Bookshelf close button ─── */
 .bookshelf-close {
-  position: absolute;
+  position: fixed;
   top: 44px;
   right: 48px;
   font-size: 28px;
@@ -412,7 +423,7 @@ canvas + div {
 
 /* ─── Bookshelf hint text ─── */
 .bookshelf-hint {
-  position: absolute;
+  position: fixed;
   bottom: 44px;
   right: 48px;
   font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
@@ -509,6 +520,75 @@ canvas + div {
 /* ─── Project shelf: mobile grid hidden on desktop ─── */
 .project-shelf-mobile {
   display: none;
+}
+
+/* ─── One Week Projects: speed-build showcase below the main 2×2 scene ─── */
+.one-week-projects {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px 140px;
+}
+
+.one-week-heading {
+  font-family: var(--font-instrument-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 34px;
+  letter-spacing: -0.01em;
+  color: #f0ede8;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.one-week-mockup-wrap {
+  position: relative;
+}
+
+.one-week-tag {
+  position: absolute;
+  top: -14px;
+  right: -16px;
+  transform: rotate(-4deg);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(18, 16, 14, 0.85);
+  border: 1px solid rgba(240, 237, 232, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo,
+    monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(240, 237, 232, 0.85);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.one-week-tag::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(240, 237, 232, 0.85);
+  flex-shrink: 0;
+}
+
+.one-week-caption {
+  margin-top: 20px;
+  max-width: 420px;
+}
+
+/* Desktop instance hidden on the mobile grid breakpoint (a smaller
+   instance is nested inside .project-shelf-mobile instead) */
+.one-week-projects--desktop {
+  display: flex;
 }
 
 /* ─── Device caption ─── */
@@ -674,6 +754,25 @@ canvas + div {
   /* ── Project shelf: hide desktop 2×2 float layout; show mobile grid ── */
   .project-shelf-desktop {
     display: none !important;
+  }
+
+  /* Desktop One Week Projects instance hidden — mobile grid carries its own */
+  .one-week-projects--desktop {
+    display: none !important;
+  }
+
+  .project-mobile-owp {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+  }
+
+  .one-week-projects--mobile {
+    padding: 0 0 24px;
+  }
+
+  .one-week-projects--mobile .one-week-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
   }
 
   .project-shelf-mobile {

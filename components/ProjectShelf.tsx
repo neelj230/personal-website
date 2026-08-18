@@ -8,6 +8,7 @@ import LaptopDevice from "@/components/devices/LaptopDevice";
 import ClipboardDevice from "@/components/devices/ClipboardDevice";
 import TVDevice from "@/components/devices/TVDevice";
 import PennReachDevice from "@/components/devices/PennReachDevice";
+import OneWeekProjects from "@/components/OneWeekProjects";
 import type { Project } from "@/data/projects";
 
 // Caption container width — wide enough for full text without clamping
@@ -46,14 +47,20 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
             ×
           </button>
 
-          {/* Desktop: floating 2×2 scene */}
-          <div className="bookshelf-scene project-shelf-scene project-shelf-desktop">
-            <AnimatePresence>
-              {projects.map((project, i) => (
-                <ProjectDevice key={project.id} project={project} index={i} />
-              ))}
-            </AnimatePresence>
+          {/* Desktop: floating 2×2 scene, one viewport tall so its internal
+              x/y positioning keeps referencing the viewport exactly */}
+          <div className="project-shelf-viewport project-shelf-desktop">
+            <div className="bookshelf-scene project-shelf-scene">
+              <AnimatePresence>
+                {projects.map((project, i) => (
+                  <ProjectDevice key={project.id} project={project} index={i} />
+                ))}
+              </AnimatePresence>
+            </div>
           </div>
+
+          {/* Desktop: speed-build showcase below the fold (scroll to reveal) */}
+          <OneWeekProjects variant="desktop" />
 
           {/* Mobile: scrollable 2-column grid with full-size captions */}
           <div className="project-shelf-mobile">
@@ -91,6 +98,9 @@ export default function ProjectShelf({ visible, onClose }: ProjectShelfProps) {
                 </div>
               );
             })}
+            <div className="project-mobile-owp">
+              <OneWeekProjects variant="mobile" />
+            </div>
           </div>
 
           <p className="bookshelf-hint">drag devices · interact with screens</p>
